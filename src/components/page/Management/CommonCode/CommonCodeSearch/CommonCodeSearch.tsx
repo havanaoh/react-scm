@@ -11,7 +11,7 @@ export const CommonCodeSearch = () => {
                             <option value={"groupCode"}>그룹코드</option>
                         </select>
                         <input />
-                        <StyledButton>검색</StyledButton>
+                        <StyledButton variant='secondary'>검색</StyledButton>
                         <StyledButton>등록</StyledButton>
                     </div>
                 </div>
