@@ -7,6 +7,8 @@ import { NoticeModal } from "../NoticeModal/NoticeModal";
 import { Portal } from "../../../../common/potal/Portal";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../../../../stores/modalState";
+import { searchApi } from "../../../../../api/NoticeApi/searchApi";
+import { Notice } from "../../../../../api/api";
 
 export interface INotice {
     noticeId: number;
@@ -31,11 +33,13 @@ export const NoticeMain = () => {
         searchNoticeList();
     }, [search]);
 
-    const searchNoticeList = (currentPage?: number) => {
+    const searchNoticeList = async (currentPage?: number) => {
         currentPage = currentPage || 1;
         const searchParam = new URLSearchParams(search);
         searchParam.append("currentPage", currentPage.toString());
         searchParam.append("pageSize", "5");
+
+        const result = await searchApi<INoticeListBodyResponse>(Notice.search, searchParam);
 
         axios.post("/management/noticeListBody.do", searchParam).then((res: AxiosResponse<INoticeListBodyResponse>) => {
             setNoticeList(res.data.noticeList);

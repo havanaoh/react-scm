@@ -88,11 +88,14 @@ export const NoticeModal: FC<INoticeModalProps> = ({ noticeId, setNoticeId, post
         console.log(e.target.files);
         const fileInfo = e.target.files;
         if (fileInfo?.length > 0) {
+            // "." 기준으로 name을 나눠
             const fileSplit = fileInfo[0].name.split(".");
+            // 소문자로 바꿈
             const fileExt = fileSplit[1].toLowerCase();
 
             if (fileExt === "jpg" || fileExt === "gif" || fileExt === "png") {
                 console.log(URL.createObjectURL(fileInfo[0]));
+                // 미리보기 url 생성
                 setImageUrl(URL.createObjectURL(fileInfo[0]));
             }
             setFileName(fileInfo[0].name);
@@ -154,14 +157,17 @@ export const NoticeModal: FC<INoticeModalProps> = ({ noticeId, setNoticeId, post
             .then((res: AxiosResponse<Blob>) => {
                 const url = window.URL.createObjectURL(res.data);
                 console.log(url);
+                // a태그 동적으로 생성
                 const link = document.createElement("a");
                 link.href = url;
                 link.setAttribute("download", detail?.fileName as string);
                 document.body.appendChild(link);
                 link.click();
 
-                // document.body.removeChild(link);
-                // window.URL.revokeObjectURL(url);
+                // a태그가 남아있음 데이터 누수(과부하)가 올 수 있어 지워줘야함
+                document.body.removeChild(link);
+                // 다운로드 후 URL이 필요 없어지므로 삭제 안 하면 메모리에 남아서 브라우저 성능 저하 가능
+                window.URL.revokeObjectURL(url);
             });
     };
 

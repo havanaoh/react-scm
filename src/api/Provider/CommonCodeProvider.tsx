@@ -16,9 +16,7 @@ interface ISearchKeyword {
 export const CommonCodeContext = createContext<ISearchKeyword>({});
 
 // 만들어진 값에 searchKeyword, setSearchKeyword을 넣어서 자식 노드에서 searchKeyword와, setSearchKeyword를 자유롭게 호출하게 한다.
-export const CommonCodeProvider: FC<{
-    children: React.ReactNode | React.ReactNode[];
-}> = ({ children }) => {
+export const CommonCodeProvider: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
     const [searchKeyword, setSearchKeyword] = useState({});
     return (
         <CommonCodeContext.Provider value={{ searchKeyword, setSearchKeyword }}>{children}</CommonCodeContext.Provider>
